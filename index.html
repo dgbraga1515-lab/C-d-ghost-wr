@@ -1,0 +1,150 @@
+index.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COD: Ghosts Leaderboards</title>
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        body { background-color: #131416; color: #eeeeee; font-family: sans-serif; }
+        .bg-dark-panel { background-color: #1b1d20; }
+        .bg-dark-sidebar { background-color: #161719; }
+        .bg-dark-row:nth-child(even) { background-color: #181a1d; }
+        .bg-dark-row:nth-child(odd) { background-color: #1f2125; }
+    </style>
+</head>
+<body class="p-2 md:p-6">
+
+    <!-- CABEÇALHO DO JOGO -->
+    <div class="max-w-7xl mx-auto bg-dark-panel p-4 md:p-6 rounded-t-lg border-b-4 border-orange-600 flex flex-col md:flex-row items-center gap-6">
+        <!-- FOTO DO GHOST -->
+        <div class="w-28 h-36 bg-zinc-800 rounded shadow-lg border border-zinc-700 overflow-hidden flex-shrink-0">
+            <img src="https://unsplash.com" alt="Ghost COD" class="w-full h-full object-cover">
+        </div>
+        <div class="w-full">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-wider uppercase text-white">Call of Duty: Ghosts</h1>
+                    <p class="text-zinc-400 text-sm mt-1">Plataformas: PC / PS4 / Xbox One / PS3 / X360</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="openModal('submeter')" class="px-4 py-2 rounded font-bold text-sm bg-green-600 hover:bg-green-700 text-white shadow-lg">🚀 Enviar Run</button>
+                    <button onclick="openModal('admin')" class="px-3 py-2 rounded font-bold text-sm bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-white">⚙️ Painel do Dono</button>
+                </div>
+            </div>
+            
+            <!-- ABAS PRINCIPAIS (ESTILO SPEEDRUN.COM) -->
+            <div class="flex gap-2 mt-6 border-b border-zinc-700 pb-px">
+                <button onclick="changeMode('campanha')" id="mode-btn-campanha" class="px-4 py-2 font-bold text-sm border-b-2 border-orange-500 text-white">Modo Campanha</button>
+                <button onclick="changeMode('extincao')" id="mode-btn-extincao" class="px-4 py-2 font-bold text-sm border-b-2 border-transparent text-zinc-400 hover:text-zinc-200">Modo Extinção</button>
+                <button onclick="openModal('regras')" class="px-4 py-2 font-bold text-sm text-zinc-400 hover:text-zinc-200 ml-auto">📜 Ver Regras</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAINEL PRINCIPAL (SIDEBAR + TABELA DE CLASSIFICAÇÃO) -->
+    <div class="max-w-7xl mx-auto bg-dark-panel rounded-b-lg shadow-xl flex flex-col md:flex-row min-h-[500px]">
+        
+        <!-- BARRA LATERAL DE MAPAS / FASES -->
+        <div class="w-full md:w-64 bg-dark-sidebar p-4 border-r border-zinc-800 flex flex-col gap-1" id="sidebar-mapas">
+            <!-- Gerado automaticamente via JavaScript dependendo do modo selecionado -->
+        </div>
+
+        <!-- CONTEÚDO DO RANKING -->
+        <div class="flex-1 p-4 md:p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span id="txt-modo-atual" class="text-orange-500">Campanha</span>: 
+                    <span id="txt-mapa-atual" class="text-zinc-300">Todas as Missões (Any%)</span>
+                </h2>
+                <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-1 rounded border border-zinc-700">Filtro: Tempo Real (RTA)</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-zinc-700 text-zinc-400 text-xs uppercase">
+                            <th class="p-3 w-16 text-center">Rank</th>
+                            <th class="p-3">Jogador</th>
+                            <th class="p-3">Tempo Obtido</th>
+                            <th class="p-3">Plataforma</th>
+                            <th class="p-3 text-center">Prova em Vídeo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-leaderboard">
+                        <!-- Conteúdo alimentado pelo JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: FORMULÁRIO DE ENVIO -->
+    <div id="modal-submeter" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-dark-panel max-w-md w-full p-6 rounded-lg border border-zinc-700">
+            <h3 class="text-xl font-bold mb-4 text-white">🚀 Enviar Novo Recorde</h3>
+            <form id="form-run" class="space-y-4 text-sm text-zinc-300">
+                <div><label class="block mb-1">Seu Nome/Nick:</label><input type="text" id="run-player" required class="w-full bg-zinc-900 border border-zinc-700 p-2 rounded text-white focus:border-orange-500 focus:outline-none"></div>
+                <div>
+                    <label class="block mb-1">Modo e Fase:</label>
+                    <select id="run-map-select" class="w-full bg-zinc-900 border border-zinc-700 p-2 rounded text-white focus:outline-none">
+                        <!-- Opções geradas pelo JS para incluir todas as fases -->
+                    </select>
+                </div>
+                <div><label class="block mb-1">Seu Tempo Final:</label><input type="text" id="run-time" required placeholder="Ex: 14m 22s ou 03h 10m" class="w-full bg-zinc-900 border border-zinc-700 p-2 rounded text-white focus:border-orange-500 focus:outline-none"></div>
+                <div><label class="block mb-1">Plataforma:</label><select id="run-platform" class="w-full bg-zinc-900 border border-zinc-700 p-2 rounded text-white"><option value="PC">PC</option><option value="PS4">PS4</option><option value="Xbox One">Xbox One</option><option value="PS3">PS3</option><option value="Xbox 360">Xbox 360</option></select></div>
+                <div><label class="block mb-1">Link do Vídeo (YouTube/Twitch):</label><input type="url" id="run-video" required placeholder="https://..." class="w-full bg-zinc-900 border border-zinc-700 p-2 rounded text-white focus:border-orange-500 focus:outline-none"></div>
+                <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeModal('submeter')" class="px-4 py-2 bg-zinc-700 rounded font-bold">Cancelar</button><button type="submit" class="px-4 py-2 bg-green-600 rounded font-bold text-white hover:bg-green-700">Enviar Registro</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: REGRAS CUSTOMIZÁVEIS -->
+    <div id="modal-regras" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-dark-panel max-w-xl w-full p-6 rounded-lg border border-zinc-700">
+            <h3 class="text-xl font-bold border-b border-zinc-700 pb-2 mb-4 text-white">📜 Diretrizes e Regras do Ranking</h3>
+            <div id="texto-regras" class="text-zinc-300 text-sm whitespace-pre-line leading-relaxed"></div>
+            <div class="mt-6 flex justify-end"><button onclick="closeModal('regras')" class="px-5 py-2 bg-zinc-700 text-white font-bold rounded">Entendido</button></div>
+        </div>
+    </div>
+
+    <!-- MODAL: PAINEL ADMINISTRATIVO SECRETO -->
+    <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-dark-panel max-w-4xl w-full p-6 rounded-lg border border-zinc-700 max-h-[85vh] overflow-y-auto">
+            <h3 class="text-xl font-bold mb-4 text-orange-500 flex justify-between items-center">
+                <span>⚙️ Central do Moderador</span>
+                <button onclick="closeModal('admin')" class="text-zinc-400 hover:text-white">❌</button>
+            </h3>
+            <div class="mb-6 bg-zinc-900 p-4 rounded border border-zinc-800">
+                <h4 class="font-bold mb-2 text-white text-sm">📝 Atualizar Regras Escritas</h4>
+                <textarea id="edit-regras-input" rows="4" class="w-full bg-zinc-800 p-2 text-sm text-white rounded border border-zinc-700 focus:outline-none"></textarea>
+                <button onclick="salvarRegrasLocal()" class="mt-2 px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700">Salvar Mudanças</button>
+            </div>
+            <h4 class="font-bold mb-2 text-white text-sm">⏳ Fila de Validação (Aprovações Pendentes):</h4>
+            <div class="overflow-x-auto"><table class="w-full text-left text-xs text-zinc-300">
+                <thead>
+                    <tr class="border-b border-zinc-700 uppercase text-zinc-500">
+                        <th class="p-2">Jogador</th>
+                        <th class="p-2">Categoria/Mapa</th>
+                        <th class="p-2">Tempo</th>
+                        <th class="p-2">Link</th>
+                        <th class="p-2 text-right">Decisão</th>
+                    </tr>
+                </thead>
+                <tbody id="fila-moderacao"></tbody>
+            </table></div>
+        </div>
+    </div>
+
+    <!-- ENGINE JAVASCRIPT DO SITE -->
+    <script>
+        // ESTRUTURA OFICIAL DE MAPAS DO COD GHOSTS
+        const mapasPorModo = {
+            campanha: [
+                { id: "c_any", nome: "Todas as Missões (Any%)" },
+                { id: "c_m1", nome: "01. Contos de Fantasmas" },
+                { id: "c_m2", nome: "02. Um Novo Mundo" },
+                { id: "c_m3", nome: "03. No Man's Land" },
+                { id: "c_m4", nome: "04. Derrubado" },
+                { id: "c_m5", nome: "05. Homecoming" },
