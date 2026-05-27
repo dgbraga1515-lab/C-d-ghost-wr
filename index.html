@@ -5,29 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COD: Ghosts Leaderboards</title>
     <style>
-        /* ESTILOS PRETO E CINZA IGUAL SPEEDRUN.COM */
         body { background-color: #131416; color: #eeeeee; font-family: Arial, sans-serif; margin: 0; padding: 10px; }
         .container { max-width: 1100px; margin: 0 auto; background-color: #1b1d20; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); overflow: hidden; }
         .header { padding: 20px; border-bottom: 4px solid #ea580c; display: flex; flex-direction: column; gap: 15px; }
-        .game-title { font-size: 24px; font-weight: bold; text-transform: uppercase; margin: 0; color: #ffffff; }
+        .header-content { display: flex; flex-direction: row; gap: 15px; align-items: center; width: 100%; }
+        .ghost-img { w-full; width: 65px; h-full; height: 80px; object-cover; object-fit: cover; border-radius: 4px; border: 1px solid #3f3f46; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .game-title { font-size: 22px; font-weight: bold; text-transform: uppercase; margin: 0; color: #ffffff; }
         .platform-text { color: #a1a1aa; font-size: 13px; margin: 5px 0 0 0; }
         
-        /* BOTÕES */
         .btn { padding: 8px 14px; border: none; border-radius: 4px; font-weight: bold; font-size: 13px; cursor: pointer; color: white; }
         .btn-green { background-color: #16a34a; }
         .btn-zinc { background-color: #27272a; color: #a1a1aa; border: 1px solid #3f3f46; }
-        .btn-orange { background-color: #ea580c; }
-        .btn-purple { background-color: #7c3aed; }
+        .btn-orange { background-color: #ea580c; color: white; }
+        .btn-purple { background-color: #7c3aed; color: white; }
         
-        /* LAYOUT LATERAL + TABELA */
         .main-content { display: flex; flex-direction: column; }
         @media(min-width: 768px) { .main-content { flex-direction: row; } }
         .sidebar { background-color: #161719; width: 100%; padding: 15px; box-sizing: border-box; border-bottom: 1px solid #27272a; }
         @media(min-width: 768px) { .sidebar { width: 250px; border-bottom: none; border-right: 1px solid #27272a; } }
-        .sidebar-btn { display: block; w-full; width: 100%; text-align: left; background: none; border: none; color: #a1a1aa; padding: 8px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; }
+        .sidebar-btn { display: block; width: 100%; text-align: left; background: none; border: none; color: #a1a1aa; padding: 10px; font-size: 13px; cursor: pointer; border-radius: 4px; margin-bottom: 4px; }
         .sidebar-btn.active { background-color: #27272a; color: #ffffff; border-left: 3px solid #ea580c; font-weight: bold; }
         
-        .leaderboard-area { flex-1; padding: 20px; width: 100%; box-sizing: border-box; }
+        .leaderboard-area { flex: 1; padding: 20px; width: 100%; box-sizing: border-box; }
         .table-responsive { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
         th { border-bottom: 2px solid #3f3f46; color: #a1a1aa; padding: 10px; text-align: left; font-size: 11px; text-transform: uppercase; }
@@ -35,15 +34,13 @@
         .row-even { background-color: #181a1d; }
         .row-odd { background-color: #1f2125; }
         
-        /* MODAIS ESCONDIDOS POR PADRÃO */
         .modal { display: none; position: fixed; inset: 0; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; padding: 15px; z-index: 100; }
         .modal-content { background-color: #1b1d20; max-width: 500px; width: 100%; padding: 20px; border-radius: 8px; border: 1px solid #3f3f46; box-sizing: border-box; }
         .modal-title { font-size: 18px; font-weight: bold; margin-top: 0; margin-bottom: 15px; color: #ffffff; }
         
-        /* FORMULÁRIOS */
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 12px; color: #a1a1aa; }
-        .form-control { width: 100%; background-color: #09090b; border: 1px solid #3f3f46; padding: 8px; border-radius: 4px; color: white; box-sizing: border-box; }
+        .form-control { width: 100%; background-color: #09090b; border: 1px solid #3f3f46; padding: 8px; border-radius: 4px; color: white; box-sizing: border-box; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -51,12 +48,16 @@
     <div class="container">
         <!-- CABEÇALHO -->
         <div class="header">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <div>
-                    <h1 class="game-title">🪖 Call of Duty: Ghosts</h1>
-                    <p class="platform-text">Plataformas: PC / PS4 / Xbox One / PS3 / X360</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <!-- SEÇÃO COM A FOTO DO GHOST -->
+                <div class="header-content">
+                    <img src="https://postimg.cc" alt="Ghost" class="ghost-img" onerror="this.src='https://placehold.co'">
+                    <div>
+                        <h1 class="game-title">🪖 Call of Duty: Ghosts</h1>
+                        <p class="platform-text">Plataformas: PC / PS4 / Xbox One / PS3 / X360</p>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; margin-top: 5px;">
                     <button onclick="openModal('submeter')" class="btn btn-green">🚀 Enviar Run</button>
                     <button onclick="openModal('admin')" class="btn btn-zinc">⚙️ Painel Admin</button>
                 </div>
@@ -69,7 +70,6 @@
             </div>
         </div>
 
-        <!-- CONTEÚDO PRINCIPAL -->
         <div class="main-content">
             <div class="sidebar" id="sidebar-mapas"></div>
             <div class="leaderboard-area">
@@ -82,7 +82,7 @@
                                 <th>Jogador</th>
                                 <th>Tempo</th>
                                 <th>Plataforma</th>
-                                <th style="text-align: center;">Vídeo</th>
+                                <th style="text-align: center;">Provas</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-rows"></tbody>
@@ -100,8 +100,11 @@
                 <div class="form-group"><label>Seu Nome/Nick:</label><input type="text" id="run-player" required class="form-control"></div>
                 <div class="form-group"><label>Selecione a Fase:</label><select id="run-map-select" class="form-control"></select></div>
                 <div class="form-group"><label>Seu Tempo Final:</label><input type="text" id="run-time" required placeholder="Ex: 15m 30s" class="form-control"></div>
-                <div class="form-group"><label>Plataforma:</label><select id="run-platform" class="form-control"><option value="PC">PC</option><option value="PS4">PS4</option><option value="Xbox One">Xbox One</option></select></div>
+                <div class="form-group"><label>Plataforma:</label><select id="run-platform" class="form-control"><option value="PC">PC</option><option value="PS4">PS4</option><option value="Xbox One">Xbox One</option><option value="PS3">PS3</option><option value="Xbox 360">Xbox 360</option></select></div>
                 <div class="form-group"><label>Link do Vídeo (YouTube/Twitch):</label><input type="url" id="run-video" required placeholder="https://..." class="form-control"></div>
+                <!-- NOVO CAMPO: LINK DA FOTO DA TELA -->
+                <div class="form-group"><label>Link da Foto/Print do Placar (Opcional):</label><input type="url" id="run-screenshot" placeholder="Link da foto no Imgur/Postimages..." class="form-control"></div>
+                
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
                     <button type="button" onclick="closeModal('submeter')" class="btn btn-zinc">Cancelar</button>
                     <button type="submit" class="btn btn-green">Enviar Registro</button>
@@ -114,7 +117,7 @@
     <div id="modal-regras" class="modal">
         <div class="modal-content">
             <h3 class="modal-title">📜 Diretrizes do Ranking</h3>
-            <div id="texto-regras" style="font-size: 13px; color: #d4d4d8; white-space: pre-line; line-height: 1.5;"></div>
+            <div id="texto-regras" style="font-size: 14px; color: #d4d4d8; white-space: pre-line; line-height: 1.5;"></div>
             <button onclick="closeModal('regras')" class="btn btn-zinc" style="width: 100%; margin-top: 15px;">Entendido</button>
         </div>
     </div>
@@ -123,19 +126,19 @@
     <div id="modal-admin" class="modal">
         <div class="modal-content" style="max-width: 650px;">
             <h3 class="modal-title">⚙️ Painel do Moderador</h3>
-            <div style="background-color: #161719; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+            <div style="background-color: #161719; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
                 <label style="font-size: 12px; color: #a1a1aa; display: block; margin-bottom: 5px;">Editar Regras do Site:</label>
                 <textarea id="edit-regras-input" rows="3" class="form-control"></textarea>
-                <button onclick="salvarRegrasLocal()" class="btn btn-orange" style="margin-top: 8px; font-size: 11px; padding: 5px 10px;">Salvar Novas Regras</button>
+                <button type="button" onclick="salvarRegrasLocal()" class="btn btn-orange" style="margin-top: 8px; font-size: 11px; padding: 6px 12px;">Salvar Novas Regras</button>
             </div>
             <h4 style="font-size: 13px; margin: 0 0 10px 0;">⏳ Runs Pendentes para Aprovação:</h4>
             <div class="table-responsive">
-                <table style="font-size: 12px;">
-                    <thead><tr><th>Jogador</th><th>Fase</th><th>Tempo</th><th style="text-align: right;">Ação</th></tr></thead>
+                <table style="font-size: 12px; width: 100%;">
+                    <thead><tr><th>Jogador</th><th>Fase</th><th>Tempo</th><th>Provas enviadas</th><th style="text-align: right;">Ação</th></tr></thead>
                     <tbody id="fila-moderacao"></tbody>
                 </table>
             </div>
-            <button onclick="closeModal('admin')" class="btn btn-zinc" style="width: 100%; margin-top: 15px;">Fechar Painel</button>
+            <button type="button" onclick="closeModal('admin')" class="btn btn-zinc" style="width: 100%; margin-top: 15px;">Fechar Painel</button>
         </div>
     </div>
 
@@ -145,23 +148,4 @@
                 { id: "c_any", nome: "Todas as Missões (Any%)" },
                 { id: "c_m1", nome: "01. Contos de Fantasmas" },
                 { id: "c_m2", nome: "02. Um Novo Mundo" },
-                { id: "c_m3", nome: "03. No Man's Land" },
-                { id: "c_m4", nome: "04. Derrubado" },
-                { id: "c_m5", nome: "05. Homecoming" }
-            ],
-            extincao: [
-                { id: "e_p1", nome: "Point of Contact (Solo)" },
-                { id: "e_p1c", nome: "Point of Contact (Co-op)" },
-                { id: "e_m1", nome: "Nightfall (DLC 1)" }
-            ]
-        };
-
-        let modoAtual = 'campanha';
-        let mapaSelecionado = 'c_any';
-
-        let runs = JSON.parse(localStorage.getItem('gh_runs')) || [
-            { id: 1, player: "CapitãoPreço", mapId: "c_any", time: "02h 45m 10s", platform: "PC", video: "https://youtube.com", status: "aprovado" },
-            { id: 2, player: "Ghost_BR", mapId: "e_p1", time: "22m 14s", platform: "PS4", video: "https://youtube.com", status: "aprovado" }
-        ];
-
         
